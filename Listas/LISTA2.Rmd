@@ -1,0 +1,53 @@
+library(PNADcIBGE)
+library(survey)
+library(dplyr)
+
+year - ano
+quarter - trimestre
+labels - valores textuais
+deflator - inflação
+design - desenho amostral
+savedir - 
+
+```{r}
+dados_pnadc <- get_pnadc(year=2023, quarter=1, 
+                         labels=TRUE, deflator=TRUE, 
+                         design=TRUE, savedir=tempdir())
+```
+```{r}
+dados_pnadc_brutos <- get_pnadc(year=2023, quarter=1, 
+                         labels=TRUE, deflator=TRUE, 
+                         design=FALSE, savedir=tempdir())
+```
+
+
+```{r}
+dados_pessoas_ocupadas_e_sexo <- get_pnadc(year = 2023, quarter = 1, vars = c("VD4002", "VD4002"))
+```
+```{r}
+
+```
+
+
+```{r}
+rm()
+```
+
+```{r}
+
+```
+
+
+=-=-=-=-=-= QUESTÃO 02 =-=-=-=-=-=
+
+```{r}
+soma_divisao_por_2 <- function(a, b) {
+  resultado <- (a + b) / 2
+  return(resultado)
+}
+
+soma_divisao_por_2(3, 2)
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
