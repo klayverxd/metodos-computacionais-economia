@@ -42,7 +42,8 @@ Para análise de regressão linear, utiliza-se a função lm (modelo linear). O 
 attach(thuesen)
 lm(short.velocity~blood.glucose)
 ```
-
+- p valor significante, menor que 5% do nível
+- coeficiente para a glicose (0.02196) positivo,  ou seja, quanto maior o nível de glicose, maior os outros atributos
 ```{r}
 lm.velo<-lm(short.velocity~blood.glucose)
 summary(lm.velo)
@@ -109,6 +110,8 @@ cor(thuesen,use="complete.obs")
 ```
 
 No entanto, os cálculos acima não fornecem nenhuma indicação se a correlação é significativamente diferente de zero. 
+- hipotese alernativa: a verdadeira correlação não é 0, diferente de 0 estatisticamente
+- hipotese nula: a correlação é igual a 0 estatisticamente
 
 Para isso, você precisa de cor.test. Funciona simplesmente especificando as duas variáveis:
 
@@ -208,6 +211,9 @@ star.1 <- stargazer(mod1, mod2, mod3, title = "Título: Resultados das Regressõ
     column.labels = c("MQO-mod1", "MQO-mod2", "MQO-mod3"), align = TRUE, type = "text", 
     keep.stat = c("aic", "bic", "rsq", "adj.rsq", "n"))
 ```
+quanto menor, melhor. o melhor é o da 3° coluna
+AIC = AKAIKE
+BIC = SCHWARZ
 
 ## Teste de Multicolinearidade (vif)
 
@@ -226,6 +232,7 @@ reg3.vif
 ## Heterocedasticidade no modelo 3
 ### Teste de White
 
+rejeita por ter p-value menor que 5% (0,05)
 ```{r}
 lmtest::bptest(mod3, ~log(LSAT) + log(GPA) + log(libvol) + log(cost) + I(log(LSAT)^2) + 
     I(log(GPA)^2) + I(log(libvol)^2) + I(log(cost)^2), data = lawsch85)
@@ -254,3 +261,11 @@ JB.mod3
 ```
 
 Rejeita-se H0 e conclui-se por resíduos não normais. 
+
+```{r}
+library(nlme)
+reg.gls <- gls(log(salary) ~ top10 + r11_25 + r26_40 + r41_60 + r61.100 + log(LSAT) + log(GPA) + log(libvol) + log(cost), data = lawsch85, na.action = na.exclude)
+
+plot(reg.gls)
+```
+
