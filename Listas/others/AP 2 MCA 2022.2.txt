@@ -1,0 +1,135 @@
+#Kallyne Maria Mesquita de Sousa- 473025
+#Ana Marcia da Silva Gabaglia -473964
+#Marcos Antuanny Almeida Fournier- 501081
+
+#Questão 1
+
+data("meap93")
+summary(lm(math10 ~ salary + staff + enroll, data = meap93))
+
+
+#a)
+
+
+# A analise dos dados revela que o modelo possui significancia global, dado que p-valor < 0.5, atingir 
+# 95% no nível de confiança, porem apenas uma variável apresenta significancia individual, a variavel
+# salary. Os resultados indicam que as variáveis tem baixo poder esplicativo.
+#
+# A partir dessa análise podemos concluir que o tamanho da escola não influencia as notas, mas o salário dos professores
+# afeta as notas, e que as outras variáveis não são significatifas para o modelo.
+
+#b)
+#```{r}
+#plot(reg)
+
+#```
+#1.
+#O gráfico 1 deveria parecer aleatório dos resíduos vs. valores ajustados deveria parecer aleatório. 
+#Ao analisar o gráfico, nota-se que os resíduos não são homogêneos para todos os valores de Y. 
+#Havendo uma maior concentrção de valores entre 20 e 25.
+#2.
+#O grafico 2, deveria seguir a linha reta se os erros forem distribuídos normalmente, no entanto 
+#os pontos 321, 236 e 25 desviam da linha reta.
+#3.
+#O terceiro gráfico (Escala-Localização), como o primeiro, deve parecer aleatório. Sem padrões. 
+#No entato há um leve padrão em forma de V.
+#4.
+#O último gráfico (distância de Cook) nos diz quais pontos têm a maior influência na regressão 
+#(pontos de alavancagem). Observamos que os pontos 321, 236 e 25 têm grande influência no modelo.
+
+
+#c)
+## Teste de Multicolinearidade (vif)
+#```{r}
+library(car)
+vif(reg)
+#```
+#Não possui multicolinearidade
+## Teste de White
+#```{r}
+lmtest::bptest(reg,~salary+staff+enroll+I(salary^2)+I(enroll^2)+I(staff^2),data=meap93)
+#```
+#Possui heterocedasticidade
+
+## Autocorrelação
+#```{r}
+lmtest::dwtest(reg)
+#```
+#Ha autocorrelação entre os erros
+
+
+# Portanto, dada a presença de heterocedasticidadee autocorrelação entre os erros 
+# [é necessário a aplicação de ajustes ao modelo]
+
+
+
+#Questão 2
+
+#a)
+# O sinal mais provável é positivo, pois com uma renda maior, a mulher pode ter acesso a melhores 
+# tratamentos, exames e alimentação. Logo, isso pode favorecer positivamente o peso de nascimento. 
+
+
+#b)
+# Sim, considero que sejam correlacionados. Essa correlação seria negativa. As pessoas em situação de 
+# vulnerabilidade socioeconômica temden a fumar mais, e as políticas contra o uso de cigarro não aslcançam 
+# efetivamente essas pessoas, logo elas tem menos chances de abandonar o vício. Pessoas de maior renda, 
+# geralmente, são mais escolarizadas, logo possuem maior percepção sobre os problemas decorrentes do uso de 
+# cigarro. Portanto, quanto maior a renda, menor tende a ser a quantidade de cigarros utilizada.
+
+
+#c)
+data("bwght")
+
+
+modelo1 <- lm(bwght ~ cigs + faminc, data = bwght)
+summary(modelo1)
+
+# Equação
+# bwght = 116.97413 -0,46431x1 + 0,09276x2
+
+# Tamanho da amostra
+# 1388
+
+#Multiple R-squared: 0.0298
+# Adjusted R-squared: 0.0284 
+
+modelo2 <- lm(bwght ~ cigs, data = bwght)
+summary(modelo2)
+
+# Equação
+# bwght = 119.77190 -0.51377x1
+
+# Tamanho da amostra
+# 1388
+
+# Multiple R-squared: 0.02273
+# Adjusted R-squared: 0.02202 
+
+
+# Resultados
+# Pelo Teste F, os dois modelos são globalmente significante a 5%.
+# Todas as variaveis individualmente se monstraram significantes nos dois modelos a 5%
+
+# No modelo1
+# Uma unidade a mais de cigarro diminui o peso de nascimento em -0,46431 onças
+# Uma unidade a mais de renda aumenta o peso de nascimento em 0,09276 onças
+
+# No modelo 2
+# Uma unidade a mais de cigarro diminui o peso de nascimento em -0.51377 onças
+
+
+# A adição de faminc aumenta o poder explicativo do modelo, dado que o r-ajustado
+# do modelo 1 é maior do que o do modelo 2
+
+# Alem disso, a adição de faminc reduz o efeito da quantidade de cigarros sobre
+# o peso de nascimento
+
+# Isso demonstra que, uma maior renda é capaz de inibir os efeitos do uso de cigarro
+# Conforme explicitado nos itens a e b
+
+
+
+
+
+
